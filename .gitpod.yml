@@ -1,0 +1,2 @@
+tasks:
+  - init: gem install cfhighlander kurgan rspec --no-doc
