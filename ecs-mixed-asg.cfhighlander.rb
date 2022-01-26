@@ -10,7 +10,7 @@ CfhighlanderTemplate do
     ComponentParam 'Subnets', type: 'CommaDelimitedList'
     ComponentParam 'EcsCluster', type: 'String'
     ComponentParam 'KeyName', type: 'String'
-    ComponentParam 'Ami', '/aws/service/ecs/optimized-ami/amazon-linux-2/recommended/image_id', type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    ComponentParam 'Ami', '', type: 'AWS::EC2::Image::Id'
     ComponentParam 'DesiredCapacity', '-1', type: 'String' # allows ecs capacity provider to determine the desired count
     ComponentParam 'MinSize', '1', type: 'String'
     ComponentParam 'MaxSize', '2', type: 'String'
