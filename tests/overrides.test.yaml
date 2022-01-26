@@ -1,0 +1,10 @@
+test_metadata:
+  type: config
+  name: overrides
+  description: tests adding instance type overrides
+
+
+instance_types_overrides:
+  - c5.large
+  - c5.xlarge
+  - c5.2xlarge

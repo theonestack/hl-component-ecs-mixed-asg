@@ -1,6 +1,7 @@
 CloudFormation do
   
   Condition('KeyNameSet', FnNot(FnEquals(Ref('KeyName'), '')))
+  Condition('InstanceTypeSet', FnNot(FnEquals(Ref('InstanceType'), '')))
 
   tags = external_parameters.fetch(:tags, {})
   template_tags = []
@@ -8,9 +9,6 @@ CloudFormation do
   template_tags.push({ Key: 'Environment', Value: Ref(:EnvironmentName) })
   template_tags.push({ Key: 'EnvironmentType', Value: Ref(:EnvironmentType) })
   template_tags.push(*tags.map {|k,v| {Key: k, Value: FnSub(v)}}).uniq { |h| h[:Key] } if defined? tags
-
-
-
 
   policies = []
   iam_policies.each do |name,policy|
@@ -51,6 +49,7 @@ CloudFormation do
       UserData: FnBase64(FnSub(instance_userdata)),
       IamInstanceProfile: { Name: Ref(:InstanceProfile) },
       KeyName: FnIf('KeyNameSet', Ref('KeyName'), Ref('AWS::NoValue')),
+      InstanceType: FnIf('InstanceTypeSet', Ref('InstanceType'), Ref('AWS::NoValue')),
       ImageId: Ref('Ami'),
       Monitoring: { Enabled: detailed_monitoring }
   }

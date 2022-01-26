@@ -9,6 +9,7 @@ CfhighlanderTemplate do
       ComponentParam 'DesiredCapacity', '-1', type: 'String' # allows ecs capacity provider to determine the desired count
       ComponentParam 'MinSize', '1', type: 'String'
       ComponentParam 'MaxSize', '2', type: 'String'
+      ComponentParam 'OnDemandInstanceType', '', type: 'String'
     end
   
   end

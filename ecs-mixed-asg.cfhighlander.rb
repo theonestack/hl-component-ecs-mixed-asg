@@ -9,11 +9,14 @@ CfhighlanderTemplate do
     ComponentParam 'VPCId', type: 'AWS::EC2::VPC::Id'
     ComponentParam 'Subnets', type: 'CommaDelimitedList'
     ComponentParam 'EcsCluster', type: 'String'
+    ComponentParam 'OnDemandInstanceType', '', type: 'String'
+
   end
 
   Component template: 'launch-template', name: 'launchtemplate', render: Inline, config: @config do
     parameter name: 'VPCId', value: Ref(:VPCId)
     parameter name: 'EcsCluster', value: Ref(:EcsCluster)
+    parameter name: 'InstanceType', value: Ref(:OnDemandInstanceType)
   end
 
   Component template: 'autoscaling-group', name: 'ecs-mixed', render: Inline, config: @config do

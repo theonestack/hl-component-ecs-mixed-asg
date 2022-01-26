@@ -7,6 +7,7 @@ CfhighlanderTemplate do
     ComponentParam 'SecurityGroupIds', type: 'String'
     ComponentParam 'KeyName', '', type: 'AWS::EC2::KeyPair::KeyName'
     ComponentParam 'Ami', type: 'AWS::EC2::Image::Id'
+    ComponentParam 'InstanceType', '', type: 'String'
   end
 
 end
