@@ -17,8 +17,21 @@ CloudFormation do
       }
     }
   end
+
+  ecs_mixed_asg_tags = []
+  ecs_mixed_asg_tags << { Key: 'Name', Value: FnSub("${EnvironmentName}-#{external_parameters[:component_name]}") }
+  ecs_mixed_asg_tags << { Key: 'Environment', Value: Ref(:EnvironmentName) }
+  ecs_mixed_asg_tags << { Key: 'EnvironmentType', Value: Ref(:EnvironmentType) }
+
+  create_security_group('SecurityGroup', Ref('VPCId'), FnSub("${EnvironmentName}-ECS Mixed ASG"),  external_parameters.fetch(:ingress_rules, []))
   
-  AutoScaling_AutoScalingGroup(:asg) do
+  AutoScaling_AutoScalingGroup(:AutoScalingGroup) do
+    UpdatePolicy(:AutoScalingReplacingUpdate, {
+      WillReplace: true
+    })
+    UpdatePolicy(:AutoScalingScheduledAction, {
+      IgnoreUnmodifiedGroupSizeProperties: true
+    })
     AutoScalingGroupName FnSub(asg_name)
     CapacityRebalance capacity_rebalance unless capacity_rebalance.nil?
     HealthCheckType 'ec2'
@@ -28,11 +41,11 @@ CloudFormation do
     MaxInstanceLifetime max_instance_lifetime unless max_instance_lifetime.nil?
     MixedInstancesPolicy ({
       InstancesDistribution: {
-        OnDemandAllocationStrategy: 'prioritized',
-        OnDemandBaseCapacity: 0,
-        OnDemandPercentageAboveBaseCapacity: 0,
-        SpotAllocationStrategy: 'capacity-optimized-prioritized',
-        SpotInstancePools: 5,
+        OnDemandAllocationStrategy: Ref(:OnDemandAllocationStrategy),
+        OnDemandBaseCapacity: Ref(:OnDemandBaseCapacity),
+        OnDemandPercentageAboveBaseCapacity: Ref(:OnDemandPercentageAboveBaseCapacity),
+        SpotAllocationStrategy: Ref(:SpotAllocationStrategy),
+        SpotInstancePools: Ref(:SpotInstancePools),
         SpotMaxPrice: ''
       },
       LaunchTemplate: {
@@ -44,48 +57,12 @@ CloudFormation do
       }
     })
     VPCZoneIdentifier Ref(:Subnets)
+    Tags ecs_mixed_asg_tags.each {|tag| tag[:PropagateAtLaunch]=false}
   end
 
+  Output(:AutoScalingGroup) {
+    Value(Ref(:AutoScalingGroup))
+  }
+
+
 end
-
-
-# Type: AWS::AutoScaling::AutoScalingGroup
-# Properties: 
-#   AutoScalingGroupName: String
-#   AvailabilityZones: 
-#     - String
-#   CapacityRebalance: Boolean
-#   Context: String
-#   Cooldown: String
-#   DesiredCapacity: String
-#   DesiredCapacityType: String
-#   HealthCheckGracePeriod: Integer
-#   HealthCheckType: String
-#   InstanceId: String
-#   LaunchConfigurationName: String
-#   LaunchTemplate: 
-#     LaunchTemplateSpecification
-#   LifecycleHookSpecificationList: 
-#     - LifecycleHookSpecification
-#   LoadBalancerNames: 
-#     - String
-#   MaxInstanceLifetime: Integer
-#   MaxSize: String
-#   MetricsCollection: 
-#     - MetricsCollection
-#   MinSize: String
-#   MixedInstancesPolicy: 
-#     MixedInstancesPolicy
-#   NewInstancesProtectedFromScaleIn: Boolean
-#   NotificationConfigurations: 
-#     - NotificationConfiguration
-#   PlacementGroup: String
-#   ServiceLinkedRoleARN: String
-#   Tags: 
-#     - TagProperty
-#   TargetGroupARNs: 
-#     - String
-#   TerminationPolicies: 
-#     - String
-#   VPCZoneIdentifier: 
-#     - String

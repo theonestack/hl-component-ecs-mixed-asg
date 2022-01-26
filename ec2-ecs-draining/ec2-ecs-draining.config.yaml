@@ -1,0 +1,38 @@
+dain_hook_iam_policies:
+  ec2:
+    action:
+      - ec2:DescribeInstances
+      - ec2:DescribeInstanceAttribute
+      - ec2:DescribeInstanceStatus
+      - ec2:DescribeHosts
+  autoscaling:
+    action: 
+      - autoscaling:CompleteLifecycleAction
+    resource: 
+      - Fn::Sub: aws:aws:autoscaling:${AWS::Region}:${AWS::AccountId}:autoScalingGroup:*:autoScalingGroupName/${AutoScalingGroup}
+  ecs1:
+    action:
+      - ecs:DescribeContainerInstances
+      - ecs:DescribeTasks
+  ecs2:
+    action:
+      - ecs:ListContainerInstances
+      - ecs:SubmitContainerStateChange
+      - ecs:SubmitTaskStateChange
+    resource: 
+      - Fn::Sub: aws:aws:ecs:${AWS::Region}:${AWS::AccountId}:cluster/${EcsCluster}
+  ecs3:
+    action:
+      - ecs:UpdateContainerInstancesState
+      - ecs:ListTasks
+    condition:
+      ArnEquals:
+        ecs:cluster:
+          Fn::Sub: aws:aws:ecs:${AWS::Region}:${AWS::AccountId}:cluster/${EcsCluster}
+          
+dain_hook_topic_iam_policies:
+  sns:
+    action: 
+      - sns:Publish
+    resource: 
+      - Ref: DrainECSHookTopic

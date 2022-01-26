@@ -5,10 +5,40 @@ detailed_monitoring: false
 terminate_excess: false
 
 iam_policies:
-  ec2-describe:
+  ecs-container-instance:
     action:
-      - ec2:DescribeInstances
-      - ec2:DescribeTags
+      - ecs:CreateCluster
+      - ecs:DeregisterContainerInstance
+      - ecs:DiscoverPollEndpoint
+      - ecs:Poll
+      - ecs:RegisterContainerInstance
+      - ecs:StartTelemetrySession
+      - ecs:Submit*
+      - ecr:GetAuthorizationToken
+      - ecr:BatchCheckLayerAvailability
+      - ecr:GetDownloadUrlForLayer
+      - ecr:BatchGetImage
+      - logs:CreateLogStream
+      - logs:PutLogEvents
+  ecs-service-scheduler:
+    action:
+      - ec2:AuthorizeSecurityGroupIngress
+      - ec2:Describe*
+      - elasticloadbalancing:DeregisterInstancesFromLoadBalancer
+      - elasticloadbalancing:DeregisterTargets
+      - elasticloadbalancing:Describe*
+      - elasticloadbalancing:RegisterInstancesWithLoadBalancer
+      - elasticloadbalancing:RegisterTargets
+  ssm-ssh-access:
+    action:
+      - ssm:UpdateInstanceInformation
+      - ssm:ListInstanceAssociations
+      - ec2messages:GetMessages
+      - ssmmessages:CreateControlChannel
+      - ssmmessages:CreateDataChannel
+      - ssmmessages:OpenControlChannel
+      - ssmmessages:OpenDataChannel
+
 
 userdata: |
   INSTANCE_ID=$(/opt/aws/bin/ec2-metadata --instance-id|/usr/bin/awk '{print $2}')
