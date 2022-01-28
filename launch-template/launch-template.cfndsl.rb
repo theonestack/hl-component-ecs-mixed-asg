@@ -43,8 +43,7 @@ CloudFormation do
       SecurityGroupIds: FnSplit(',', Ref(:SecurityGroupIds)),
       TagSpecifications: [
         { ResourceType: 'instance', Tags: fleet_tags },
-        { ResourceType: 'volume', Tags: fleet_tags },
-        { ResourceType: 'launch-template', Tags: template_tags }
+        { ResourceType: 'volume', Tags: fleet_tags }
       ],
       UserData: FnBase64(FnSub(instance_userdata)),
       IamInstanceProfile: { Name: Ref(:InstanceProfile) },

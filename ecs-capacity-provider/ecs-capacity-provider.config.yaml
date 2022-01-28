@@ -1,0 +1,6 @@
+managed_scaling:
+  instance_warmup_period: 300
+  maximum_scaling_step_size: 1000
+  minimumscaling_step_size: 1
+  status: ENABLED
+  target_capacity: 100

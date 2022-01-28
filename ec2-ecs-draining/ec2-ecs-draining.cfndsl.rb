@@ -3,12 +3,12 @@ CloudFormation do
 
   default_tags = external_parameters.fetch(:default_tags, [])
 
-  IAM_Role(:DrainECSHookFunctionRole) {
+  IAM_Role(:DrainECSHookFunctionRole) do
     Path '/'
     AssumeRolePolicyDocument service_assume_role_policy('lambda')
     Policies iam_role_policies(external_parameters[:dain_hook_iam_policies])
     Tags default_tags
-  }
+  end
   
   Lambda_Function(:DrainECSHookFunction) {
     Handler 'index.lambda_handler'

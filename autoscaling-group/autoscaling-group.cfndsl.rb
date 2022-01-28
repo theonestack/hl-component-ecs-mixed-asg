@@ -2,7 +2,6 @@ CloudFormation do
 
   Condition(:HasDesiredCapacity, FnNot(FnEquals(Ref(:DesiredCapacity), '-1')))
 
-  asg_name = external_parameters.fetch(:asg_name, "${EnvironmentName}-#{external_parameters[:component_name]}")
   capacity_rebalance = external_parameters.fetch(:capacity_rebalance, nil)
   max_instance_lifetime = external_parameters.fetch(:max_instance_lifetime, nil)
   instance_types_overrides = external_parameters.fetch(:instance_types_overrides, [Ref(:OnDemandInstanceType)])
@@ -32,9 +31,8 @@ CloudFormation do
     UpdatePolicy(:AutoScalingScheduledAction, {
       IgnoreUnmodifiedGroupSizeProperties: true
     })
-    AutoScalingGroupName FnSub(asg_name)
     CapacityRebalance capacity_rebalance unless capacity_rebalance.nil?
-    HealthCheckType 'ec2'
+    HealthCheckType 'EC2'
     DesiredCapacity FnIf('HasDesiredCapacity', Ref(:DesiredCapacity), Ref('AWS::NoValue'))
     MinSize Ref(:MinSize)
     MaxSize Ref(:MaxSize)
@@ -56,13 +54,13 @@ CloudFormation do
         Overrides: launch_template_overrides
       }
     })
-    VPCZoneIdentifier FnSplit(',',Ref(:Subnets))
+    VPCZoneIdentifiers Ref(:Subnets)
     Tags ecs_mixed_asg_tags.each {|tag| tag[:PropagateAtLaunch]=false}
   end
 
-  Output(:AutoScalingGroup) {
+  Output(:AutoScalingGroup) do
     Value(Ref(:AutoScalingGroup))
-  }
+  end
 
 
 end

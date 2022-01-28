@@ -7,7 +7,7 @@ CfhighlanderTemplate do
     ComponentParam 'EnvironmentName', 'dev', isGlobal: true
     ComponentParam 'EnvironmentType', 'development', allowedValues: ['development','production'], isGlobal: true
     ComponentParam 'VPCId', type: 'AWS::EC2::VPC::Id'
-    ComponentParam 'Subnets', type: 'String'
+    ComponentParam 'Subnets', type: 'CommaDelimitedList'
     ComponentParam 'EcsCluster', type: 'String'
     ComponentParam 'KeyName', type: 'String'
     ComponentParam 'Ami', '', type: 'String'
@@ -53,5 +53,10 @@ CfhighlanderTemplate do
     parameter name: 'EcsCluster', value: Ref(:EcsCluster)
     parameter name: 'AutoScalingGroup', value: cfout('ecs-mixed.AutoScalingGroup')
   end
+
+  # Component template: 'ecs-capacity-provider', name: 'ecs-capacity-provider', render: Inline, config: @config do
+  #   parameter name: 'EcsCluster', value: Ref(:EcsCluster)
+  #   parameter name: 'AutoScalingGroup', value: cfout('ecs-mixed.AutoScalingGroup')
+  # end
 
 end

@@ -25,10 +25,6 @@ dain_hook_iam_policies:
     action:
       - ecs:UpdateContainerInstancesState
       - ecs:ListTasks
-    condition:
-      ArnEquals:
-        ecs:cluster:
-          Fn::Sub: aws:aws:ecs:${AWS::Region}:${AWS::AccountId}:cluster/${EcsCluster}
           
 dain_hook_topic_iam_policies:
   sns:
