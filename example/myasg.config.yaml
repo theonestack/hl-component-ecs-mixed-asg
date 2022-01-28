@@ -1,0 +1,7 @@
+
+
+instance_types_overrides:
+  - t3.small
+  - t3.medium
+  - t3.large
+  - t3.xlarge

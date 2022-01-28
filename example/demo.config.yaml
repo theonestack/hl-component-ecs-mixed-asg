@@ -1,0 +1,17 @@
+subcomponent_config_file: true
+
+ecs_service_type: ec2
+
+task_definition:
+  demo:
+    memory: 256
+    cpu: 256
+    image: nginx
+    tag: latest
+    env_vars:
+      ENVIRONMENT_NAME:
+        Fn::Sub: ${EnvironmentName}
+      SSM_PATH:
+        Fn::Sub: /procella/environments/${EnvironmentName}/batch
+      AWS_REGION:
+        Fn::Sub: ${AWS::Region}
