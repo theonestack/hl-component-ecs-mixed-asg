@@ -54,9 +54,10 @@ CfhighlanderTemplate do
     parameter name: 'AutoScalingGroup', value: cfout('ecs-mixed.AutoScalingGroup')
   end
 
-  # Component template: 'ecs-capacity-provider', name: 'ecs-capacity-provider', render: Inline, config: @config do
-  #   parameter name: 'EcsCluster', value: Ref(:EcsCluster)
-  #   parameter name: 'AutoScalingGroup', value: cfout('ecs-mixed.AutoScalingGroup')
-  # end
+  Component template: 'ecs-capacity-provider', name: 'ecs-capacity-provider', render: Inline, config: @config do
+    parameter name: 'EcsCluster', value: Ref(:EcsCluster)
+    parameter name: 'AutoScalingGroupArn', value: cfout('ecs-mixed.AutoScalingGroup')
+    parameter name: 'BaseCapacity', value: Ref(:OnDemandBaseCapacity)
+  end
 
 end

@@ -9,7 +9,7 @@ CloudFormation do
   ECS_CapacityProvider(:CapacityProvider) do
     Name FnSub(provider_name) unless provider_name.nil?
     AutoScalingGroupProvider ({
-      AutoScalingGroupArn: Ref(:AutoScalingGroup),
+      AutoScalingGroupArn: Ref(:AutoScalingGroupArn),
       ManagedScaling: managed_scaling
     })
     Tags default_tags

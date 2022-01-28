@@ -6,7 +6,7 @@ CfhighlanderTemplate do
       ComponentParam 'EnvironmentName', 'dev', isGlobal: true
       ComponentParam 'EnvironmentType', 'development', allowedValues: ['development','production'], isGlobal: true
       ComponentParam 'EcsCluster', '', type: 'String'
-      ComponentParam 'AutoScalingGroup', type: 'String'
+      ComponentParam 'AutoScalingGroupArn', type: 'String'
     end
   
   end
