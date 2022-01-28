@@ -7,7 +7,7 @@ CfhighlanderTemplate do
     ComponentParam 'EnvironmentName', 'dev', isGlobal: true
     ComponentParam 'EnvironmentType', 'development', allowedValues: ['development','production'], isGlobal: true
     ComponentParam 'VPCId', type: 'AWS::EC2::VPC::Id'
-    ComponentParam 'Subnets', type: 'CommaDelimitedList'
+    ComponentParam 'Subnets', type: 'String'
     ComponentParam 'EcsCluster', type: 'String'
     ComponentParam 'KeyName', type: 'String'
     ComponentParam 'Ami', '', type: 'String'

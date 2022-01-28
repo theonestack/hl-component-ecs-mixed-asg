@@ -6,6 +6,7 @@ CfhighlanderTemplate do
       ComponentParam 'EnvironmentName', 'dev', isGlobal: true
       ComponentParam 'EnvironmentType', 'development', allowedValues: ['development','production'], isGlobal: true
       ComponentParam 'VPCId', type: 'AWS::EC2::VPC::Id'
+      ComponentParam 'Subnets', type: 'String'
       ComponentParam 'SecurityGroupIds', type: 'String'
       ComponentParam 'LaunchTemplateId', type: 'String'
       ComponentParam 'DesiredCapacity', '-1', type: 'String' # allows ecs capacity provider to determine the desired count

@@ -56,7 +56,7 @@ CloudFormation do
         Overrides: launch_template_overrides
       }
     })
-    VPCZoneIdentifier Ref(:Subnets)
+    VPCZoneIdentifier FnSplit(',',Ref(:Subnets))
     Tags ecs_mixed_asg_tags.each {|tag| tag[:PropagateAtLaunch]=false}
   end
 
